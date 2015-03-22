@@ -25,7 +25,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		color = GetColor(GetRand(255), GetRand(255), GetRand(255));
 
-		DrawPixel( GetRand(512), GetRand(480), color );
+		DrawPixel( GetRand(512-1), GetRand(480-1), color );
+
+		Sleep(1);
 	}
 
 	DxLib_End() ;				// ＤＸライブラリ使用の終了処理
