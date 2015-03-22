@@ -1,0 +1,15 @@
+set incsearch
+set hlsearch
+set nobackup
+set showmatch
+set autoindent
+set number
+syntax on
+set tabstop=4
+set shiftwidth=4
+cnoremap <C-b> <left>
+cnoremap <C-f> <right>
+map <C-n> :tabn<ENTER>
+map <C-p> :tabp<ENTER>
+map #7 :tabnew<ENTER>
+set expandtab
