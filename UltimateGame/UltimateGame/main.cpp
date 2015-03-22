@@ -4,14 +4,29 @@
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 						LPSTR lpCmdLine, int nCmdShow )
 {
+	int color;
+
+	// ウィンドウモードに変更
+	ChangeWindowMode( TRUE );
+
+	SetGraphMode(512, 480, 32);
+
 	if( DxLib_Init() == -1 )		// ＤＸライブラリ初期化処理
 	{
 		return -1 ;			// エラーが起きたら直ちに終了
 	}
 
-	DrawPixel( 320 , 240 , 0xffff ) ;	// 点を打つ
+	while(1)
+	{
+		if( CheckHitKey( KEY_INPUT_ESCAPE ) == 1 )
+		{
+			break;
+		}
 
-	WaitKey() ;				// キー入力待ち
+		color = GetColor(GetRand(255), GetRand(255), GetRand(255));
+
+		DrawPixel( GetRand(512), GetRand(480), color );
+	}
 
 	DxLib_End() ;				// ＤＸライブラリ使用の終了処理
 
