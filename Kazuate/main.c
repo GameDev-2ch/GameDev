@@ -5,7 +5,7 @@ int main(void)
 {
 	int input_num, ans_num;
 
-	printf("”‚ğ“–‚Ä‚Ä‚Ë\n");
+	printf("ˆÓ¯‚ğW’†‚µ‚ÄB“ª‚É•‚‚©‚ñ‚¾”‚Í‰½‚Å‚µ‚å‚¤\n");
 
 	ans_num = rand() % 100;
 	scanf("%d", &input_num);
