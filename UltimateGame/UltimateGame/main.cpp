@@ -1,11 +1,11 @@
 #include "DxLib.h"
 
+#include "game.h"
+
 // プログラムは WinMain から始まります
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 						LPSTR lpCmdLine, int nCmdShow )
 {
-
-	int color;
 
 	int lastFrameTime, timeCount, frameCount, currentTime;
 	float fps;
@@ -14,11 +14,14 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	ChangeWindowMode( TRUE );
 
 	SetGraphMode(512, 480, 32);
+	SetWaitVSyncFlag(FALSE);
 
 	if( DxLib_Init() == -1 )		// ＤＸライブラリ初期化処理
 	{
 		return -1 ;			// エラーが起きたら直ちに終了
 	}
+
+	Game game(512, 480, _T("player.png"), _T("tama.png"), 500);
 
 	timeCount = 0;
 	frameCount = 0;
@@ -39,10 +42,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 		// ゲーム処理
-//		color = GetColor(GetRand(255), GetRand(255), GetRand(255));
-//		DrawPixel( GetRand(512-1), GetRand(480-1), color );
-
-
+		game.update(currentTime - lastFrameTime);
 
 		// fps表示
 		timeCount += currentTime - lastFrameTime;
@@ -53,6 +53,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		}
 
 		DrawFormatString(0, 0, GetColor(255, 255, 255), _T("FPS:%.1f"), fps);
+		DrawFormatString(0, 16, GetColor(255, 255, 255), _T("移動　　:ASDW"));
+		DrawFormatString(0, 32, GetColor(255, 255, 255), _T("ショット:左クリック"));
 		lastFrameTime = currentTime;
 
 		ScreenFlip();
