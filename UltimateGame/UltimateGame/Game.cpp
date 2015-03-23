@@ -32,29 +32,34 @@ int Chara::setGraphicFromID(int graph_id)
 void Player::shot(void)
 {
 
-	int div = 8;
-	float pi = 3.14159265;
+	int div = 18;
+	float pi = 3.14159265f;
 	float shot_range = pi * 45 / 180;
 
-	float speed = 0.4f;
+	float speed, sin_tmp, cos_tmp;
 	Tama *tama;
-	for(int i=0;i<3;i++){
-		for(int j=1;j<=div;j++){
+	for(int j=1;j<=div;j++){
+
+		sin_tmp = sin(shot_range / div * j);
+		cos_tmp = cos(shot_range / div * j);
+
+		speed = 0.4f;
+		for(int i=0;i<5;i++){
 
 			tama = pGame->createTama();
 			tama->x = x;
 			tama->y = y;
-			tama->directionX = sin(shot_range / div * j) * speed;
-			tama->directionY = -cos(shot_range / div * j) * speed;
+			tama->directionX = sin_tmp * speed;
+			tama->directionY = -cos_tmp * speed;
 
 			tama = pGame->createTama();
 			tama->x = x;
 			tama->y = y;
-			tama->directionX = -sin(shot_range / div * j) * speed;
-			tama->directionY = -cos(shot_range / div * j) * speed;
+			tama->directionX = -sin_tmp * speed;
+			tama->directionY = -cos_tmp * speed;
+
+			speed *= 0.9f;
 		}
-
-		speed *= 0.9f;
 	}
 }
 
@@ -102,7 +107,7 @@ void Player::update(int timeSinceLast)
 		}
 	}else{
 
-			mouseL = false;
+		mouseL = false;
 	}
 }
 
@@ -159,6 +164,33 @@ void Game::update(int timeSinceLast)
 	}
 
 	tamaFreePos = it_false;
+
+#ifdef	_DEBUG // デバッグ用
+
+	bool f=true;
+	int live_count=0;
+	int false_count=0;
+	for(TamaIt t=tama.begin();t!=tama.end();++t){
+
+		if(t==tamaFreePos) f=false;
+
+		if(f){
+
+			live_count++;
+			assert((*t)->live == true);
+
+		}	else {
+
+			false_count++;
+			assert((*t)->live == false);
+		}
+	}
+
+	DrawFormatString(0, 48, GetColor(255, 255, 255), _T("   Live:%d"), live_count);
+	DrawFormatString(0, 64, GetColor(255, 255, 255), _T("NotLive:%d"), false_count);
+
+#endif
+
 }
 
 Tama *Game::createTama(void)
@@ -170,6 +202,7 @@ Tama *Game::createTama(void)
 		ret = new Tama(this);
 		tama.push_back(ret);
 		tamaFreePos = tama.end();
+		ret->setGraphicFromID(tamaGraphID);
 
 	}else{
 
@@ -194,7 +227,7 @@ Game::Game(int win_width, int win_height, const TCHAR *playerGraph, const TCHAR 
 
 	tamaGraphID = LoadGraph(tamaGraph);
 
-	//表示できる最大の弾を確保
+	// 予め弾オブジェクトをnewしておく
 	tama.resize(numMaxTama);
 	for(TamaIt it=tama.begin();it!=tama.end();++it){
 		(*it) = new Tama(this);

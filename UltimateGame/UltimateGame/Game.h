@@ -3,7 +3,6 @@
 #include "DxLib.h"
 
 #include <vector>
-#include <list>
 
 class Tama;
 class Game;
@@ -81,16 +80,17 @@ private:
 	/* 
 		弾vectorの挙動について
 		このvectorはGameコンストラクト時に最大数分のTamaをnewし、vectorにそのポインタを格納
-		すべてのTama::liveはfalseにセット。createTama()で弾が発生しliveはtrueにされる。
-		Game::update()時に、画面外に出ている弾はTama::liveをfalseにセットする処理が行われ、
+		すべてのTama::liveはfalseにセット。createTama()で弾が発生しliveはtrueに設定される。
+		Game::update()時に、画面外に出ている弾はTama::liveをfalseにセットする処理がされ、
 		Game::update()の最後で、Tama::liveがtrueのものをvector内の前方へ集める処理を行う。
+		createTama()時はvector内で最も前方にあるliveがfalseであるものが発生した弾として使用される
 	*/
 	std::vector<Tama*>	tama;
 	TamaIt							tamaFreePos;	// 使われてない弾の先頭位置
 		
-	int									winWidth;
-	int									winHeight;
+	int									winWidth;			// ウインドウ幅
+	int									winHeight;		// ウインドウ高さ
 
-	int									tamaGraphID;
+	int									tamaGraphID;	// 弾用グラフィックID
 };
 

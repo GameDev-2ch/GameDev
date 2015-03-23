@@ -21,7 +21,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		return -1 ;			// エラーが起きたら直ちに終了
 	}
 
-	Game game(512, 480, _T("player.png"), _T("tama.png"), 500);
+	Game game(512, 480, _T("player.png"), _T("tama.png"), 3000);
 
 	timeCount = 0;
 	frameCount = 0;
